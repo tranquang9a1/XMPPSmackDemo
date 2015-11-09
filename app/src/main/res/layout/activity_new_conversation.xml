@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/white">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#009688" >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_send"
+            android:id="@+id/btnCreate"
+            android:layout_gravity="end"
+            android:clickable="true"/>
+
+
+
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:hint="Enter username"
+            android:paddingLeft="15dp"
+            android:id="@+id/txtUsername"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimary"
+            android:layout_below="@id/txtUsername"
+            android:id="@+id/separate" android:orientation="vertical">
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/separate"
+            android:id="@+id/lv_sample_list"></ListView>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

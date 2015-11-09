@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#009688" >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_menu"
+            android:id="@+id/btnCall"
+            android:layout_gravity="end"
+            android:clickable="true"/>
+
+
+
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:background="@color/colorPrimaryLight">
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/form"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnImage"
+            android:layout_alignParentLeft="true"
+            android:src="@mipmap/ic_image"
+            android:background="@color/white"/>
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnMicro"
+            android:src="@mipmap/ic_micro"
+            android:layout_toRightOf="@id/btnImage"
+            android:background="@color/white"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:hint="Enter message here!"
+            android:id="@+id/chatText"
+            android:layout_toLeftOf="@+id/buttonSend"
+            android:layout_toRightOf="@id/btnMicro"
+            />
+
+
+
+        <ImageButton android:id="@+id/buttonSend"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/ic_send"
+            android:background="@color/white"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="@color/white"
+    >
+
+
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingTop="40dp"
+        android:paddingRight="20dp"
+
+        >
+
+        <EditText
+
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textSize="20sp"
+            android:autoText="false"
+            android:hint="Username"
+            android:capitalize="none"
+            android:scrollHorizontally="true"/>
+        <EditText android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:password="true"
+            android:textSize="20sp"
+            android:autoText="false"
+            android:hint="Password"
+            android:capitalize="none"
+            android:scrollHorizontally="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingLeft="4dp"
+            android:text="Forgot your password?"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp" android:orientation="vertical" android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="For Demo version only"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account2"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/term"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/version"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            >
+
+
+            <Button android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LOGIN">
+                <requestFocus/>
+            </Button>
+            <Button android:id="@+id/btnRegis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/primary"
+                android:textColor="@color/white"
+                android:text="REGISTER">
+
+            </Button>
+
+        </LinearLayout>
+    </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="1dp" android:background="@color/colorPrimary"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+    </LinearLayout>
+
+</LinearLayout>
