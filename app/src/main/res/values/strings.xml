@@ -12,5 +12,6 @@
     <string name="contact">Contact me: vinhquang.tran@officience.com</string>
     <string name="noConnection">Please check your internet connection.</string>
     <string name="checkingConnection">Checking internet connection</string>
+    <string name="alertConnection">Please connect to internet to using this application</string>
     <string name="tryAgain">Try again</string>
 </resources>
