@@ -63,7 +63,11 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
                 username = txtUsername.getText().toString();
                 password = txtPassword.getText().toString();
-                registration();
+                if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+                    DialogUtils.showAlert(RegisterActivity.this, "Enter username and password");
+                } else {
+                    registration();
+                }
             }
         });
 
@@ -72,7 +76,7 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
                 username = txtUsername.getText().toString();
                 password = txtPassword.getText().toString();
-                if (username == null || password == null) {
+                if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
                     DialogUtils.showAlert(RegisterActivity.this, "Enter username and password");
                 } else {
                     login();
