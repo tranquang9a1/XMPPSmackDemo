@@ -10,4 +10,6 @@
         using Smack-4.1.4 library for message app with XMPP Server (https://fysh.in)</string>
     <string name="version">This application support from Android 4.2 </string>
     <string name="contact">Contact me: vinhquang.tran@officience.com</string>
+    <string name="noConnection">Please check your internet connection.</string>
+    <string name="checkingConnection">Checking internet connection</string>
 </resources>
