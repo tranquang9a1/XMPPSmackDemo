@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.quangtv.xmppdemo.entity.Connection;
 import com.example.quangtv.xmppdemo.utils.Constant;
@@ -127,8 +128,14 @@ public class RegisterActivity extends Activity {
                     startActivity(intent);
                     finish();
                     dialog.dismiss();
-                } catch (SmackException | IOException | XMPPException e) {
+                } catch (SmackException | IOException  | XMPPException e) {
+                    dialog.dismiss();
                     e.printStackTrace();
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(RegisterActivity.this, "Something went wrong, please check!", Toast.LENGTH_SHORT ).show();
+                        }
+                    });
                 }
 
 
@@ -216,9 +223,14 @@ public class RegisterActivity extends Activity {
                     dialog.dismiss();
 
                 } catch (SmackException | IOException e) {
-
+                    dialog.dismiss();
                     e.printStackTrace();
-                }catch (XMPPException e) {
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(RegisterActivity.this, "Error when executing, try again!", Toast.LENGTH_SHORT ).show();
+                        }
+                    });
+                } catch (XMPPException e) {
                     Log.d("Rerr", e.getMessage());
                     dialog.dismiss();
 
