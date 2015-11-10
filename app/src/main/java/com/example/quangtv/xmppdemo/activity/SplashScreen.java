@@ -26,6 +26,7 @@ import java.io.InputStream;
 public class SplashScreen extends Activity {
     ImageView image;
     final int CHECK_TIMEOUT = 1000;
+    int SPLASH_SCREEN_WAIT_TIME = 1000;
     private boolean NO_NEED_INTERNET = false;
 
 
@@ -56,6 +57,8 @@ public class SplashScreen extends Activity {
 
 
             handler.postDelayed(new Runnable() {
+                final Runnable self = this;
+
                 @Override
                 public void run() {
                     if (Utils.isOnline() || NO_NEED_INTERNET) {
@@ -64,7 +67,7 @@ public class SplashScreen extends Activity {
                         DialogUtils.showAlert(SplashScreen.this, getResources().getString(R.string.alertConnection), new DialogUtils.IOnOkClicked() {
                             @Override
                             public void onClick() {
-                                startCheck();
+                                (new Handler()).postDelayed(self, SPLASH_SCREEN_WAIT_TIME);
                             }
                         }, new DialogUtils.IOnCancelClicked() {
                             @Override
