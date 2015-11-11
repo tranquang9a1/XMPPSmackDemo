@@ -185,35 +185,6 @@ public class RegisterActivity extends Activity {
                     Log.d("Login", "Login as " + username + "@" + Constant.HOST + " Password: " + password);
                     Presence presence = new Presence(Presence.Type.available);
                     connection.sendStanza(presence);
-                    Roster roster = Roster.getInstanceFor(connection);
-                    Collection<RosterEntry> entries = roster.getEntries();
-                    for (RosterEntry entry : entries) {
-                        Log.d(LOG_TAG,
-                                "--------------------------------------");
-                        Log.d(LOG_TAG, "RosterEntry " + entry);
-                        Log.d(LOG_TAG,
-                                "User: " + entry.getUser());
-                        Log.d(LOG_TAG,
-                                "Name: " + entry.getName());
-                        Log.d(LOG_TAG,
-                                "Status: " + entry.getStatus());
-                        Log.d(LOG_TAG,
-                                "Type: " + entry.getType());
-                        Presence entryPresence = roster.getPresence(entry
-                                .getUser());
-
-                        Log.d(LOG_TAG, "Presence Status: "
-                                + entryPresence.getStatus());
-                        Log.d(LOG_TAG, "Presence Type: "
-                                + entryPresence.getType());
-                        Presence.Type type = entryPresence.getType();
-                        if (type == Presence.Type.available)
-                            Log.d("XMPPChatDemoActivity", "Presence AVAILABLE");
-                        Log.d(LOG_TAG, "Presence : "
-                                + entryPresence);
-
-                    }
-                    //xmppClient.setConnection(connection);
                     con.setConnection(connection);
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     intent.putExtra("username", username);
