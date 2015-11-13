@@ -159,6 +159,8 @@ public class FragmentText extends Fragment{
             if (message.getName().equalsIgnoreCase(name)) {
                 duplicate = true;
                 message.setMessage(data);
+                message.setIsUser(isUser);
+                message.setType(type);
                 message.setTime(System.currentTimeMillis());
                 break;
             }

@@ -265,8 +265,8 @@ public class ChatActivity  extends ActionBarActivity {
                                 Log.i("Recieve File",
                                         "new file transfere request");
 
-                                Log.i("file request",
-                                        "from" + request.getRequestor());
+                                Log.i("File request",
+                                        "from " + request.getRequestor());
 
                                 IncomingFileTransfer transfer = request
                                         .accept();
@@ -298,7 +298,6 @@ public class ChatActivity  extends ActionBarActivity {
 
                                             break;
                                         }
-
                                     }
                                     messages.add(new MessageInfo(fileReceive.getAbsolutePath(), false, "image"));
                                     mHandler.post(new Runnable() {
