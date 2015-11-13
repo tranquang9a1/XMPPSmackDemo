@@ -88,9 +88,11 @@ public class ChatActivity  extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         String body = i.getExtras().getString("message");
-//        if (body != null) {
-//            messages.add(new MessageInfo(body, false, "text"));
-//        }
+        boolean isUser = i.getExtras().getBoolean("isUser");
+        String type = i.getExtras().getString("type");
+        if (body != null) {
+            messages.add(new MessageInfo(body, isUser, type));
+        }
         buttonSend = (ImageButton) findViewById(R.id.buttonSend);
         btnImage = (ImageButton) findViewById(R.id.btnImage);
         connection = Connection.getConnection();
@@ -168,6 +170,8 @@ public class ChatActivity  extends ActionBarActivity {
     private void setListAdapter() {
         ChatArrayAdapter chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), messages);
         listView.setAdapter(chatArrayAdapter);
+        Log.d("Adapter count", chatArrayAdapter.getCount() + "");
+        listView.setSelection(chatArrayAdapter.getCount() - 1);
     }
 
     private boolean sendChatMessage(){
@@ -179,7 +183,13 @@ public class ChatActivity  extends ActionBarActivity {
 
         msg.setBody(text);
         try {
-            connection.sendStanza(msg);
+            if (connection != null) {
+                connection.sendStanza(msg);
+            } else {
+                connection = Connection.getConnection();
+                connection.sendStanza(msg);
+            }
+
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         }
@@ -187,8 +197,12 @@ public class ChatActivity  extends ActionBarActivity {
 
 
         messages.add(new MessageInfo(chatText.getText().toString(), true, "text"));
+        mHandler.post(new Runnable() {
+            public void run() {
+                setListAdapter();
+            }
+        });
         chatText.setText("");
-        side = !side;
         return true;
     }
 
@@ -356,13 +370,13 @@ public class ChatActivity  extends ActionBarActivity {
             MessageInfo info = messages.get(messages.size() - 1);
 
             Intent intent = new Intent();
-            if (info.getType().equalsIgnoreCase("image")) {
-                intent.putExtra("message","*image");
-            } else {
-                intent.putExtra("message",info.getBody());
-            }
+
+            intent.putExtra("message",info.getBody());
+
 
             intent.putExtra("to", to);
+            intent.putExtra("isUser", info.isUser());
+            intent.putExtra("type", info.getType());
             setResult(RESULT_OK, intent);
             finish();
         } else {

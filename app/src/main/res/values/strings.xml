@@ -14,4 +14,8 @@
     <string name="checkingConnection">Checking internet connection</string>
     <string name="alertConnection">Please connect to internet to using this application</string>
     <string name="tryAgain">Try again</string>
+    <string name="use">To chat with another user, please choose
+        button send message in right bottom of screen.
+        Type name of another user to textbox and press start button at top right</string>
+    <string name="no_contact">No contact available</string>
 </resources>

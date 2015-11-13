@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.quangtv.xmppdemo.R;
 import com.example.quangtv.xmppdemo.activity.ChatActivity;
@@ -46,10 +48,12 @@ public class FragmentText extends Fragment{
     Map<String, String> data = new HashMap<>();
     private ImageButton btnSearch;
     private ImageButton btnStart;
+    private TextView txtUser;
     private String username;
     private String password;
     private XMPPConnection connection;
     private Handler mHandler = new Handler();
+    private LinearLayout emptyList;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_message, container, false);
@@ -61,7 +65,9 @@ public class FragmentText extends Fragment{
         btnSearch = (ImageButton) rootView.findViewById(R.id.btnSearch);
         btnStart = (ImageButton) rootView.findViewById(R.id.btnStart);
         lstMessage = (ListView) rootView.findViewById(R.id.lv_sample_list);
-        setData();
+        txtUser = (TextView) rootView.findViewById(R.id.txtUser);
+        emptyList = (LinearLayout) rootView.findViewById(R.id.firstTime);
+        //setData();
         connection = Connection.getConnection();
         setListAdapter();
         setConnection(connection);
@@ -74,6 +80,7 @@ public class FragmentText extends Fragment{
                 startActivityForResult(intent, 1);
             }
         });
+        txtUser.setText(username);
 
         lstMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -81,6 +88,8 @@ public class FragmentText extends Fragment{
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra("username", sampleData.get(i).getName());
                 intent.putExtra("message", sampleData.get(i).getMessage());
+                intent.putExtra("isUser", sampleData.get(i).isUser());
+                intent.putExtra("type", sampleData.get(i).getType());
                 startActivityForResult(intent, 1);
             }
         });
@@ -90,10 +99,10 @@ public class FragmentText extends Fragment{
 
     public void setData() {
         Long time = System.currentTimeMillis();
-        sampleData.add(new HistoryMessage("Quang Tran@fysh.in", "Welcome to Officience!", time));
-        sampleData.add(new HistoryMessage("Quang Luu@fysh.in", "Welcome to Officience Viet Nam!", time));
-        sampleData.add(new HistoryMessage("Tin Nguyen@fysh.in", "Welcome to Officience!", time));
-        sampleData.add(new HistoryMessage("Brice Officience@fysh.in", "Welcome to Officience!", time));
+        sampleData.add(new HistoryMessage("Quang Tran@fysh.in", "Welcome to Officience!", true, "text"));
+        sampleData.add(new HistoryMessage("Quang Luu@fysh.in", "Welcome to Officience Viet Nam!", true, "text"));
+        sampleData.add(new HistoryMessage("Tin Nguyen@fysh.in", "Welcome to Officience!", true, "text"));
+        sampleData.add(new HistoryMessage("Brice Officience@fysh.in", "Welcome to Officience!", true, "text"));
 
     }
 
@@ -120,7 +129,7 @@ public class FragmentText extends Fragment{
                     if (message.getBody() != null) {
                         String fromName = XmppStringUtils.parseBareJid(message.getFrom());
                         Log.i("XMPPClient", "Got text [" + message.getBody() + "] from [" + fromName + "]");
-                        addData(fromName, message.getBody());
+                        addData(fromName, message.getBody(), false, "text");
                         mHandler.post(new Runnable() {
                             public void run() {
                                 setListAdapter();
@@ -137,10 +146,14 @@ public class FragmentText extends Fragment{
 
     public void setListAdapter() {
         ListHistoryAdapter adapter = new ListHistoryAdapter(getActivity(), sampleData);
+        if (sampleData.size() > 0) {
+            emptyList.setVisibility(View.GONE);
+            lstMessage.setVisibility(View.VISIBLE);
+        }
         lstMessage.setAdapter(adapter);
     }
 
-    public void addData(String name, String data) {
+    public void addData(String name, String data, boolean isUser, String type) {
         boolean duplicate = false;
         for (HistoryMessage message : sampleData) {
             if (message.getName().equalsIgnoreCase(name)) {
@@ -152,7 +165,7 @@ public class FragmentText extends Fragment{
         }
 
         if (!duplicate) {
-            sampleData.add(new HistoryMessage(name, data, System.currentTimeMillis()));
+            sampleData.add(new HistoryMessage(name, data, isUser, type));
         }
         sortList();
 
@@ -164,19 +177,7 @@ public class FragmentText extends Fragment{
         Collections.sort(sampleData);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK) {
-            addData(data.getExtras().getString("to"), data.getExtras().getString("message"));
-            mHandler.post(new Runnable() {
-                public void run() {
-                    setListAdapter();
-                }
-            });
-        }
 
-    }
 
 
 }

@@ -6,12 +6,15 @@ package com.example.quangtv.xmppdemo.entity;
 public class HistoryMessage implements Comparable<HistoryMessage>{
     private String name;
     private String message;
+    private boolean isUser;
+    private String type;
     private long time;
 
-    public HistoryMessage(String name, String message, long time) {
+    public HistoryMessage(String name, String message, boolean isUser, String type) {
         this.name = name;
         this.message = message;
-        this.time = time;
+        this.type = type;
+        this.isUser = isUser;
     }
 
     public HistoryMessage() {
@@ -45,5 +48,21 @@ public class HistoryMessage implements Comparable<HistoryMessage>{
     @Override
     public int compareTo(HistoryMessage historyMessage) {
         return (int) (historyMessage.getTime() - getTime());
+    }
+
+    public boolean isUser() {
+        return isUser;
+    }
+
+    public void setIsUser(boolean isUser) {
+        this.isUser = isUser;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

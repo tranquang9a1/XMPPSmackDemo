@@ -51,8 +51,19 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:layout_below="@id/separate"
-            android:id="@+id/lv_sample_list"></ListView>
+            android:id="@+id/lv_sample_list"
+            android:visibility="gone"></ListView>
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_below="@id/separate"
+            android:textSize="20sp"
+            android:id="@+id/noContact"
+            android:textStyle="italic"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content" android:text="@string/no_contact"/>
 
     </RelativeLayout>
 

@@ -130,10 +130,12 @@ public class MainActivity extends ActionBarActivity implements MaterialTabListen
             if(resultCode == RESULT_OK){
                 String to = data.getStringExtra("to");
                 String body = data.getStringExtra("message");
+                boolean isUser = data.getBooleanExtra("isUser", true);
+                String type = data.getStringExtra("type");
 
                 FragmentText fragmentText = (FragmentText) getSupportFragmentManager().getFragments().get(0);
 
-                fragmentText.addData(to, body);
+                fragmentText.addData(to, body, isUser, type);
                 fragmentText.setListAdapter();
             }
         }

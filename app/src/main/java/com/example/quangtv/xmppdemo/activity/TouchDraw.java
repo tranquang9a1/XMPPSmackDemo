@@ -14,6 +14,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -80,7 +81,8 @@ public class TouchDraw extends Activity implements View.OnTouchListener{
         btnUndo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDrawingView.onClickUndo();
+                startRecordIntent();
+                //mDrawingView.onClickUndo();
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -166,13 +168,15 @@ public class TouchDraw extends Activity implements View.OnTouchListener{
                     if (backgroundImage != null) {
                         backgroundImage.recycle();
                     }
-                    backgroundImage = decodeScaledBitmapFromSdCard(file.getAbsolutePath(), 600, 600);
+                    backgroundImage = decodeScaledBitmapFromSdCard(file.getAbsolutePath(), 600, getHeightScreenSize());
                     BitmapDrawable background = new BitmapDrawable(getResources(),backgroundImage);
                     mDrawingPad.setBackground(background);
                     Log.d("Create", "Create Successful!");
                 } else {
                     System.out.println("File Not Found");
                 }
+            } else if (requestCode == 2) {
+                Log.d("Create", "Create Successful!");
             }
         }
     }
@@ -189,6 +193,14 @@ public class TouchDraw extends Activity implements View.OnTouchListener{
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
+    }
+
+    public  int getHeightScreenSize() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int width = displaymetrics.widthPixels;
+        return displaymetrics.heightPixels;
+
     }
 
     public static Bitmap decodeScaledBitmapFromSdCard(String filePath,
@@ -239,6 +251,11 @@ public class TouchDraw extends Activity implements View.OnTouchListener{
                         Log.i("TAG", "Finished scanning " + path);
                     }
                 });
+    }
+
+    public void startRecordIntent() {
+        Intent intent = new Intent(MediaStore.Audio.Media.RECORD_SOUND_ACTION);
+        startActivityForResult(intent, 2);
     }
 
 }

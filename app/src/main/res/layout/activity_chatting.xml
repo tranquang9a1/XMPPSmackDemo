@@ -21,17 +21,25 @@
 
 
     </android.support.v7.widget.Toolbar>
-
-    <ListView
-        android:id="@+id/listView1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/form123"
         android:layout_below="@id/toolbar"
-        android:background="@color/colorPrimaryLight">
-    </ListView>
+        >
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="@color/colorPrimaryLight"
+            >
+        </ListView>
+    </LinearLayout>
+
 
     <RelativeLayout
-        android:id="@+id/form"
+        android:id="@+id/form123"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -53,7 +61,8 @@
             android:id="@+id/btnMicro"
             android:src="@mipmap/ic_micro"
             android:layout_toRightOf="@id/btnImage"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:visibility="gone"/>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

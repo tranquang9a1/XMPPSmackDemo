@@ -73,7 +73,12 @@ public class ListHistoryAdapter extends BaseAdapter {
             //viewHolder.txtViewTitle.setText("Độ hư hại: " + info.getDamageLevel() + "%");
             viewHolder.mRoundedLetterView.setTitleText(getFirstCharacter(info.getName()));
             viewHolder.txtAccount.setText(info.getName());
-            viewHolder.txtMessage.setText(info.getMessage());
+            if (info.getType().equalsIgnoreCase("image")) {
+                viewHolder.txtMessage.setText("*image");
+            } else {
+                viewHolder.txtMessage.setText(info.getMessage());
+            }
+
             viewHolder.mRoundedLetterView.setBackgroundColor(randomColor());
 
         }

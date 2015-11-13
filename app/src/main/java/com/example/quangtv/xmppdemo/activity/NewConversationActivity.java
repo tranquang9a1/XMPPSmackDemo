@@ -91,6 +91,8 @@ public class NewConversationActivity extends ActionBarActivity {
                 Intent intent = new Intent();
                 intent.putExtra("message",body);
                 intent.putExtra("to", to);
+                intent.putExtra("isUser", data.getBooleanExtra("isUser", true));
+                intent.putExtra("type", data.getStringExtra("type"));
                 setResult(RESULT_OK, intent);
 
             }

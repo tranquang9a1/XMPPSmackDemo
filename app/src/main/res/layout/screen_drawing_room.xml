@@ -29,6 +29,11 @@
             android:layout_height="wrap_content"
             android:text="Undo"
             android:id="@+id/btnUndo" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"/>
     </LinearLayout>
 
     <LinearLayout
@@ -47,17 +52,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent" android:layout_below="@id/layoutImage"
-        android:layout_height="wrap_content" android:orientation="horizontal"
-        android:id="@+id/layoutAction" android:gravity="bottom">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Redo"
-            android:id="@+id/btnRedo" />
 
-
-
-    </LinearLayout>
 </RelativeLayout>
