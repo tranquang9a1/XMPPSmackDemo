@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by neokree on 16/12/14.
+ * Created by QuangTV on 11/5/15.
  */
 public class FragmentText extends Fragment{
 

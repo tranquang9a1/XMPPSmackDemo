@@ -2,6 +2,7 @@ package com.example.quangtv.xmppdemo.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.example.quangtv.xmppdemo.entity.Connection;
 import com.example.quangtv.xmppdemo.entity.MessageInfo;
 import com.example.quangtv.xmppdemo.R;
 import com.example.quangtv.xmppdemo.utils.DialogUtils;
+import com.example.quangtv.xmppdemo.utils.Utils;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -41,7 +43,10 @@ import org.jivesoftware.smackx.filetransfer.OutgoingFileTransfer;
 import org.jxmpp.util.XmppStringUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -198,6 +203,7 @@ public class ChatActivity  extends ActionBarActivity {
                         @Override
                         public void onClick() {
                             Intent intent = new Intent(ChatActivity.this, RegisterActivity.class);
+                            finish();
                             startActivity(intent);
                         }
                     });
@@ -338,6 +344,16 @@ public class ChatActivity  extends ActionBarActivity {
                 selectedImagePath = getPath(selectedImageUri);
                 filePath = selectedImageUri.toString();
                 Log.d("Parse Image", "Selected Path: " + (selectedImagePath != null ? selectedImagePath : filePath));
+                Bitmap newImage = Utils.decodeScaledBitmapFromSdCard((selectedImagePath != null ? selectedImagePath : filePath), 300, 300);
+                OutputStream stream = null;
+                String path = "data/data/com.example.quangtv.xmppdemo/123.jpg";
+                try {
+                    stream = new FileOutputStream(path);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                newImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
                 try {
                     messages.add(new MessageInfo((selectedImagePath != null ? selectedImagePath : filePath), true, "image"));
                     // Add the incoming message to the list view
@@ -346,7 +362,7 @@ public class ChatActivity  extends ActionBarActivity {
                             setListAdapter();
                         }
                     });
-                    sendImage(to, (selectedImagePath != null ? selectedImagePath : filePath));
+                    sendImage(to, path);
                 } catch (SmackException e) {
                     e.printStackTrace();
                 }
