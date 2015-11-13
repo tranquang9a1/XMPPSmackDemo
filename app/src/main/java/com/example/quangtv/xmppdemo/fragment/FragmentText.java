@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -78,9 +79,11 @@ public class FragmentText extends Fragment{
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), NewConversationActivity.class);
                 startActivityForResult(intent, 1);
+
             }
         });
         txtUser.setText(username);
+
 
         lstMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -93,6 +96,8 @@ public class FragmentText extends Fragment{
                 startActivityForResult(intent, 1);
             }
         });
+
+
 
     }
 

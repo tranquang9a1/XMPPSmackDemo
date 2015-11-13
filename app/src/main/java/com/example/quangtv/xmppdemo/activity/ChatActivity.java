@@ -22,6 +22,7 @@ import com.example.quangtv.xmppdemo.adapter.ChatArrayAdapter;
 import com.example.quangtv.xmppdemo.entity.Connection;
 import com.example.quangtv.xmppdemo.entity.MessageInfo;
 import com.example.quangtv.xmppdemo.R;
+import com.example.quangtv.xmppdemo.utils.DialogUtils;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -191,7 +192,16 @@ public class ChatActivity  extends ActionBarActivity {
             }
 
         } catch (SmackException.NotConnectedException e) {
-            e.printStackTrace();
+            Log.d("Chat Activity", "Error when chat" + e.getMessage());
+            DialogUtils.showAlert(this, "This account had logged at another devices, login again",
+                    new DialogUtils.IOnOkClicked() {
+                        @Override
+                        public void onClick() {
+                            Intent intent = new Intent(ChatActivity.this, RegisterActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
         }
 
 
