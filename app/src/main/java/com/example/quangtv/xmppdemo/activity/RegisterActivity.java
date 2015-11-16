@@ -122,7 +122,7 @@ public class RegisterActivity extends Activity {
                     Presence presence = new Presence(Presence.Type.available);
                     connection.sendStanza(presence);
                     con.setConnection(connection);
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                     intent.putExtra("username", username);
                     intent.putExtra("password", password);
                     startActivity(intent);
@@ -186,7 +186,7 @@ public class RegisterActivity extends Activity {
                     Presence presence = new Presence(Presence.Type.available);
                     connection.sendStanza(presence);
                     con.setConnection(connection);
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                     intent.putExtra("username", username);
                     intent.putExtra("password", password);
                     startActivity(intent);

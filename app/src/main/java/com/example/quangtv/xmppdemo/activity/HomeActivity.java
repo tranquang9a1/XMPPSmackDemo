@@ -1,28 +1,27 @@
-package com.example.quangtv.xmppdemo.fragment;
+package com.example.quangtv.xmppdemo.activity;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.quangtv.xmppdemo.R;
-import com.example.quangtv.xmppdemo.activity.ChatActivity;
-import com.example.quangtv.xmppdemo.activity.NewConversationActivity;
 import com.example.quangtv.xmppdemo.adapter.ListHistoryAdapter;
 import com.example.quangtv.xmppdemo.entity.Connection;
 import com.example.quangtv.xmppdemo.entity.HistoryMessage;
+import com.example.quangtv.xmppdemo.fragment.FragmentText;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
@@ -40,50 +39,58 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by QuangTV on 11/5/15.
+ * Created by QuangTV on 11/13/15.
  */
-public class FragmentText extends Fragment{
+public class HomeActivity extends ActionBarActivity {
 
     ListView lstMessage;
     List<HistoryMessage> sampleData = new ArrayList<>();
     private ImageButton btnStart;
     private TextView txtUser;
     private String username;
+    private ImageView btnCreate;
     private XMPPConnection connection;
     private Handler mHandler = new Handler();
     private LinearLayout emptyList;
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_message, container, false);
-        initView(rootView);
-        return rootView;
-    }
+    private LinearLayout layoutButton;
 
-    public void initView(View rootView) {
-        btnStart = (ImageButton) rootView.findViewById(R.id.btnStart);
-        lstMessage = (ListView) rootView.findViewById(R.id.lv_sample_list);
-        txtUser = (TextView) rootView.findViewById(R.id.txtUser);
-        emptyList = (LinearLayout) rootView.findViewById(R.id.firstTime);
-        //setData();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        btnStart = (ImageButton) findViewById(R.id.btnStart);
+
+        lstMessage = (ListView) findViewById(R.id.lv_sample_list);
+        txtUser = (TextView) findViewById(R.id.txtUser);
+        emptyList = (LinearLayout) findViewById(R.id.firstTime);
+        btnCreate = (ImageView) findViewById(R.id.btnCreate);
+        layoutButton = (LinearLayout) findViewById(R.id.layoutButton);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle("Home");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setHomeButtonEnabled(true);
         connection = Connection.getConnection();
         setListAdapter();
         setConnection(connection);
-        username = getActivity().getIntent().getExtras().getString("username");
+        username = getIntent().getExtras().getString("username");
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), NewConversationActivity.class);
+                Intent intent = new Intent(HomeActivity.this, NewConversationActivity.class);
                 startActivityForResult(intent, 1);
 
             }
         });
         txtUser.setText(username);
 
-
         lstMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                Intent intent = new Intent(HomeActivity.this, ChatActivity.class);
                 intent.putExtra("username", sampleData.get(i).getName());
                 intent.putExtra("message", sampleData.get(i).getMessage());
                 intent.putExtra("isUser", sampleData.get(i).isUser());
@@ -92,10 +99,17 @@ public class FragmentText extends Fragment{
             }
         });
 
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, NewConversationActivity.class);
+                startActivityForResult(intent, 1);
+            }
+        });
+
 
 
     }
-
 
     public void setData() {
         Long time = System.currentTimeMillis();
@@ -145,10 +159,11 @@ public class FragmentText extends Fragment{
     }
 
     public void setListAdapter() {
-        ListHistoryAdapter adapter = new ListHistoryAdapter(getActivity(), sampleData);
+        ListHistoryAdapter adapter = new ListHistoryAdapter(this, sampleData);
         if (sampleData.size() > 0) {
             emptyList.setVisibility(View.GONE);
             lstMessage.setVisibility(View.VISIBLE);
+            layoutButton.setVisibility(View.VISIBLE);
         }
         lstMessage.setAdapter(adapter);
     }
@@ -179,7 +194,21 @@ public class FragmentText extends Fragment{
         Collections.sort(sampleData);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 || requestCode == 65537) {
+            if(resultCode == RESULT_OK){
+                String to = data.getStringExtra("to");
+                String body = data.getStringExtra("message");
+                boolean isUser = data.getBooleanExtra("isUser", true);
+                String type = data.getStringExtra("type");
 
 
+                addData(to, body, isUser, type);
+                setListAdapter();
+            }
+        }
+    }
 
 }

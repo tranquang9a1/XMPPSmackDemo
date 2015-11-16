@@ -3,14 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:fitsSystemWindows="true"
-    tools:context=".MainActivity" android:tag="hello1">
+    tools:context=".MainActivity" android:tag="hello1" android:background="@color/white">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#009688" >
+
+
+    </android.support.v7.widget.Toolbar>
 
     <ListView
         android:id="@+id/lv_sample_list"
         android:paddingTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
         android:layout_above="@+id/layoutButton"
         android:visibility="gone"
         />
@@ -19,7 +28,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
+        android:layout_below="@id/toolbar"
         android:paddingRight="20dp"
+        android:background="@color/white"
         android:id="@+id/firstTime" android:orientation="vertical">
 
         <LinearLayout
@@ -32,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="Hello "
                 android:textSize="20sp"/>
-            
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,11 +60,18 @@
             android:layout_marginTop="10dp"
             android:textSize="20sp"
             android:layout_height="wrap_content"
-            android:text="@string/use"/>
+            android:text="@string/howtouse"/>
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/ic_message"
+            android:id="@+id/btnCreate"
+            android:clickable="true"/>
 
     </LinearLayout>
-
-
 
 
 
@@ -62,7 +80,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/layoutButton"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical">
+        android:orientation="vertical" android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,13 +94,13 @@
             android:layout_height="wrap_content"
             android:paddingTop="4dp">
             <!--<ImageButton-->
-                <!--android:layout_width="40dp"-->
-                <!--android:layout_height="40dp"-->
-                <!--android:layout_weight="0"-->
-                <!--android:layout_marginLeft="5dp"-->
-                <!--android:id="@+id/btnSearch"-->
-                <!--android:src="@mipmap/ic_search"-->
-                <!--android:background="@color/white"/>-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_weight="0"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:id="@+id/btnSearch"-->
+            <!--android:src="@mipmap/ic_search"-->
+            <!--android:background="@color/white"/>-->
 
             <ImageButton
                 android:layout_width="40dp"

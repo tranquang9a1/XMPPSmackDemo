@@ -17,5 +17,6 @@
     <string name="use">To chat with another user, please choose
         button send message in right bottom of screen.
         Type name of another user to textbox and press start button at top right</string>
+    <string name="howtouse">Tap button to chat with friend</string>
     <string name="no_contact">No contact available</string>
 </resources>

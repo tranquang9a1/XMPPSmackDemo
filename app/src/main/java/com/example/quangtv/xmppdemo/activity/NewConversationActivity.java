@@ -64,7 +64,7 @@ public class NewConversationActivity extends ActionBarActivity {
                 startChat(username);
             }
         });
-        toolbar.setOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
