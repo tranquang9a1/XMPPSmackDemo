@@ -25,8 +25,6 @@ import java.util.List;
 
 public class ChatArrayAdapter extends BaseAdapter {
 
-	private TextView chatText;
-	private List<MessageInfo> chatMessageList = new ArrayList<MessageInfo>();
 
 	private List<MessageInfo> mEntries = new ArrayList<MessageInfo>();
 	private LayoutInflater mLayoutInflater;

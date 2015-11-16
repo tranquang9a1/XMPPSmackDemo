@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.quangtv.xmppdemo.adapter.ChatArrayAdapter;
 import com.example.quangtv.xmppdemo.entity.Connection;
@@ -55,22 +56,19 @@ import java.util.List;
  * Created by QuangTV on 11/6/15.
  */
 public class ChatActivity  extends ActionBarActivity {
-    private static final String TAG = "ChatActivity";
     private Handler mHandler = new Handler();
-    private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
     private ImageButton buttonSend;
     private ImageButton btnImage;
     private String to;
     static boolean isActive = false;
-    String username;
-    String password;
     int SELECT_PICTURE = 1;
     private String selectedImagePath;
     private String filePath;
     private XMPPConnection connection;
     List<MessageInfo> messages = new ArrayList<>();
+    private String LOG_TAG = "ChatActivity";
 
     Intent intent;
     private boolean side = false;
@@ -164,19 +162,17 @@ public class ChatActivity  extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        isActive = true;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        isActive = false;
     }
 
     private void setListAdapter() {
         ChatArrayAdapter chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), messages);
         listView.setAdapter(chatArrayAdapter);
-        Log.d("Adapter count", chatArrayAdapter.getCount() + "");
+        Log.d(LOG_TAG, chatArrayAdapter.getCount() + "");
         listView.setSelection(chatArrayAdapter.getCount() - 1);
     }
 
@@ -184,42 +180,48 @@ public class ChatActivity  extends ActionBarActivity {
 
 
         String text = chatText.getText().toString();
-        Log.i("XMPPClient", "Sending text [" + text + "] to [" + to + "]");
-        Message msg = new Message(to, Message.Type.chat);
+        if (text.length() > 0) {
+            Log.i(LOG_TAG, "Sending text [" + text + "] to [" + to + "]");
+            Message msg = new Message(to, Message.Type.chat);
 
-        msg.setBody(text);
-        try {
-            if (connection != null) {
-                connection.sendStanza(msg);
-            } else {
-                connection = Connection.getConnection();
-                connection.sendStanza(msg);
+            msg.setBody(text);
+            try {
+                if (connection != null) {
+                    connection.sendStanza(msg);
+                } else {
+                    connection = Connection.getConnection();
+                    connection.sendStanza(msg);
+                }
+
+            } catch (SmackException.NotConnectedException e) {
+                Log.d(LOG_TAG, "Error when chat" + e.getMessage());
+                DialogUtils.showAlert(this, "This account had logged at another devices, login again",
+                        new DialogUtils.IOnOkClicked() {
+                            @Override
+                            public void onClick() {
+                                Intent intent = new Intent(ChatActivity.this, RegisterActivity.class);
+                                finish();
+                                startActivity(intent);
+                            }
+                        });
+
             }
 
-        } catch (SmackException.NotConnectedException e) {
-            Log.d("Chat Activity", "Error when chat" + e.getMessage());
-            DialogUtils.showAlert(this, "This account had logged at another devices, login again",
-                    new DialogUtils.IOnOkClicked() {
-                        @Override
-                        public void onClick() {
-                            Intent intent = new Intent(ChatActivity.this, RegisterActivity.class);
-                            finish();
-                            startActivity(intent);
-                        }
-                    });
 
+
+            messages.add(new MessageInfo(chatText.getText().toString(), true, "text"));
+            mHandler.post(new Runnable() {
+                public void run() {
+                    setListAdapter();
+                }
+            });
+            chatText.setText("");
+            return true;
+        } else {
+            Toast.makeText(this, "Enter message to send", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
-
-
-        messages.add(new MessageInfo(chatText.getText().toString(), true, "text"));
-        mHandler.post(new Runnable() {
-            public void run() {
-                setListAdapter();
-            }
-        });
-        chatText.setText("");
-        return true;
     }
 
 
@@ -243,14 +245,18 @@ public class ChatActivity  extends ActionBarActivity {
                     Message message = (Message) packet;
                     if (message.getBody() != null) {
                         String fromName = XmppStringUtils.parseBareJid(message.getFrom());
-                        Log.i("XMPPClient", "Got text [" + message.getBody() + "] from [" + fromName + "]");
-                        messages.add(new MessageInfo(message.getBody(), false, "text"));
-                        // Add the incoming message to the list view
-                        mHandler.post(new Runnable() {
-                            public void run() {
-                                setListAdapter();
-                            }
-                        });
+                        Log.i(LOG_TAG, "Got text [" + message.getBody() + "] from [" + fromName + "]");
+                        if (to.equalsIgnoreCase(fromName)) {
+                            messages.add(new MessageInfo(message.getBody(), false, "text"));
+                            // Add the incoming message to the list view
+                            mHandler.post(new Runnable() {
+                                public void run() {
+                                    setListAdapter();
+                                }
+                            });
+                        } else {
+                            //TODO: Save data to database
+                        }
 
                     }
                 }
@@ -270,7 +276,7 @@ public class ChatActivity  extends ActionBarActivity {
                 final FileTransferManager managerListner = FileTransferManager.getInstanceFor(connection);
                 FileTransferNegotiator.isServiceEnabled(connection);
 
-                Log.i("File transfere manager", "created");
+                Log.i(LOG_TAG, " File transfer manager created");
 
                 // Create the listener
                 managerListner
@@ -278,33 +284,33 @@ public class ChatActivity  extends ActionBarActivity {
                             public void fileTransferRequest(
                                     final FileTransferRequest request) {
 
-                                Log.i("Recieve File",
-                                        "new file transfere request");
+                                Log.i(LOG_TAG,
+                                        "New file transfer request");
 
-                                Log.i("File request",
-                                        "from " + request.getRequestor());
+                                Log.i(LOG_TAG,
+                                        "Receive file from " + request.getRequestor());
 
                                 IncomingFileTransfer transfer = request
                                         .accept();
 
-                                Log.i("Recieve File", "accepted");
+                                Log.i(LOG_TAG, "Transfer accepted");
                                 try {
 
                                     File fileReceive = new File("/sdcard/" + request.getFileName());
                                     transfer.recieveFile(fileReceive);
-                                    Log.d("Create File", fileReceive.getAbsolutePath());
+                                    Log.d(LOG_TAG, "Create file " + fileReceive.getAbsolutePath());
                                     while (!transfer.isDone()
                                             || (transfer.getProgress() < 1)) {
 
                                         Thread.sleep(1000);
-                                        Log.i("Recieve File: ",(transfer.getProgress() + " status "  + transfer.getStatus()));
+                                        Log.i(LOG_TAG, ("Receive file" + transfer.getProgress() + " status " + transfer.getStatus()));
 
                                         if (transfer.getStatus().equals(
                                                 FileTransfer.Status.error)) {
                                             // Log.i("Error file",
                                             // transfer.getError().getMessage());
-                                            Log.i("Recieve File ",
-                                                    "cancelling still receiving : "
+                                            Log.i(LOG_TAG,
+                                                    "Cancelling still receiving : "
                                                             + (transfer
                                                             .getProgress())
                                                             + " status "
@@ -343,7 +349,7 @@ public class ChatActivity  extends ActionBarActivity {
                 Uri selectedImageUri = data.getData();
                 selectedImagePath = getPath(selectedImageUri);
                 filePath = selectedImageUri.toString();
-                Log.d("Parse Image", "Selected Path: " + (selectedImagePath != null ? selectedImagePath : filePath));
+                Log.d(LOG_TAG, "Selected Path: " + (selectedImagePath != null ? selectedImagePath : filePath));
                 Bitmap newImage = Utils.decodeScaledBitmapFromSdCard((selectedImagePath != null ? selectedImagePath : filePath), 300, 300);
                 OutputStream stream = null;
                 String path = "data/data/com.example.quangtv.xmppdemo/123.jpg";
@@ -383,7 +389,7 @@ public class ChatActivity  extends ActionBarActivity {
     }
 
     private void sendImage(String to, String directory) throws SmackException {
-        Log.d("Send Image", directory);
+        Log.d(LOG_TAG, "Send image " + directory);
         FileTransferManager manager = FileTransferManager.getInstanceFor(connection);
         OutgoingFileTransfer transfer = manager.createOutgoingFileTransfer(to + "/Smack");
         transfer.sendFile(new File(directory), "File for operator");
